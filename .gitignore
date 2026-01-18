@@ -1,0 +1,3 @@
+Since the only file change is the addition of `.gitignore` itself and the deletion of `LICENSE` and `README.md` (which are source/config files), there are no build artifacts, dependencies, or temporary files to ignore.
+
+(empty — output nothing)
