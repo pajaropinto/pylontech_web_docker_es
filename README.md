@@ -6,11 +6,12 @@
 
 ## 📋 Introducción
 
-Esta aplicación se conecta directamente al **LV-Hub de Pylontech** mediante TCP/IP, recupera datos detallados de cada celda de batería, procesa información de totales del sistema y por batería individual, y publica todos los datos en formato JSON a través de MQTT. 
+Esta aplicación se conecta directamente o bien al puerto "Console" de la bateria principal o a un **LV-Hub de Pylontech** en el caso de que este instalado mediante un interface Serial/TCP/IP.
+De esta manera se recuperan los datos detallados de cada celda de batería, procesa información de totales del sistema y por batería individual, y publica todos los datos en formato JSON a través de MQTT. 
 
 Incluye una **interfaz web integrada** que permite:
 - Visualizar datos en tiempo real de totales del sistema y baterías individuales
-- Configurar parámetros del sistema (IP del LV-Hub, broker MQTT, número de baterías, etc.)
+- Configurar parámetros del sistema (IP del interface, broker MQTT, número de baterías, etc.)
 - Acceder a datos detallados por celda de cada batería
 
 La aplicación está diseñada para ejecutarse de forma continua en un contenedor Docker, asegurando alta disponibilidad y fácil despliegue.
@@ -22,7 +23,7 @@ La aplicación está diseñada para ejecutarse de forma continua en un contenedo
 El núcleo de la aplicación está escrito en C++ y realiza las siguientes funciones:
 
 #### **Conexión y Comunicación con LV-Hub**
-- Se conecta al LV-Hub mediante TCP/IP
+- Se conecta a la bateria o al LV-Hub mediante TCP/IP
 - Envía comandos `stat` para obtener ciclos de vida de baterías
 - Envía comandos `bat` para obtener datos detallados de celdas
 - Implementa reintentos automáticos y validación robusta de datos
@@ -112,7 +113,7 @@ El archivo `app_config.json` contiene los siguientes parámetros:
 La imagen está disponible públicamente en Docker Hub:
 
 ```bash
-docker pull pajaropinto/pylontech_monitor_es:2.1
+docker pull pajaropinto/pylontech_monitor_es:latest
 ```
 
 ### Ejecución
@@ -125,6 +126,21 @@ docker run -d \
   -v $(pwd)/www:/app/www \
   pajaropinto/pylontech_monitor_es:2.1
 ```
+
+```docker-compose.yml
+   services:
+    axpert-monitor:
+        image: pajaropinto/pylontech_monitor_es:latest
+        container_name: pylontech-monitor
+        volumes:
+            - /main/storage/docker/pylontech_monitor/config:/config
+            - /main/storage/docker/pylontech_monitor/log:/log
+        restart: always
+        network_mode: host
+        ports:
+            - "61616:61616"
+...
+
 
 ### Parámetros de ejecución
 
