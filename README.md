@@ -127,6 +127,7 @@ docker run -d \
   pajaropinto/pylontech_monitor_es:2.1
 ```
 
+### Docker compose
 ```docker-compose.yml
    services:
     axpert-monitor:
