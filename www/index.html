@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Pylontech</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.2/mqtt.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔋 Monitor Pylontech</h1>
+
+        <!-- Pestañas -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'tab1')">📊 Totales</button>
+            <button class="tab-button" onclick="openTab(event, 'tab2')">🔋 Baterías</button>
+            <button class="tab-button" onclick="openTab(event, 'tab3')">⚙️ Configuración</button>
+        </div>
+
+        <!-- Pestaña 1: Totales -->
+        <div id="tab1" class="tab-content" style="display: block;">
+            <h2>📊 Totales del Sistema</h2>
+            <div id="mqttStatus" class="status-indicator"></div>
+
+            <table id="systemTable" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Voltaje (V)</th>
+                        <th>Corriente (A)</th>
+                        <th>Temperatura (°C)</th>
+                        <th>SOC (%)</th>
+                        <th>Estado</th>
+                        <th>Coulomb (Ah)</th>
+                        <th>Ciclos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="sys_voltage">-</td>
+                        <td id="sys_current">-</td>
+                        <td id="sys_temp">-</td>
+                        <td id="sys_soc">-</td>
+                        <td id="sys_status">-</td>
+                        <td id="sys_coulomb">-</td>
+                        <td id="sys_cycle">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>🔋 Totales por Batería</h2>
+            <table id="batteryTable" class="data-table">
+                <thead>
+                    <tr>
+                        <th>Batería</th>
+                        <th>Voltaje (V)</th>
+                        <th>Corriente (A)</th>
+                        <th>Temperatura (°C)</th>
+                        <th>SOC (%)</th>
+                        <th>Estado</th>
+                        <th>Coulomb (Ah)</th>
+                        <th>Ciclos</th>
+                    </tr>
+                </thead>
+                <tbody id="batteryTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pestaña 2: Baterías -->
+        <div id="tab2" class="tab-content" style="display: none;">
+            <h2>🔋 Datos por Batería</h2>
+            <div id="batteriesContainer">
+                <p>Cargando datos de baterías...</p>
+            </div>
+        </div>
+
+        <!-- Pestaña 3: Configuración -->
+        <div id="tab3" class="tab-content" style="display: none;">
+            <h2>⚙️ Configuración del Sistema</h2>
+
+            <div class="config-section">
+                <div class="config-group">
+                    <label for="num_batteries">Número de baterías:</label>
+                    <input type="number" id="num_batteries" min="1" max="16">
+                </div>
+
+                <div class="config-group">
+                    <label for="delay_between_batteries">Retardo entre baterías (ms):</label>
+                    <input type="number" id="delay_between_batteries" min="100">
+                </div>
+
+                <div class="config-group">
+                    <label for="delay_between_cycle_battery">Duración ciclo BAT (min):</label>
+                    <input type="number" id="delay_between_cycle_battery" min="1">
+                </div>
+
+                <div class="config-group">
+                    <label for="battery_tcp_ip">IP del LV-Hub:</label>
+                    <input type="text" id="battery_tcp_ip" placeholder="10.0.0.234">
+                </div>
+
+                <div class="config-group">
+                    <label for="battery_tcp_port">Puerto del LV-Hub:</label>
+                    <input type="number" id="battery_tcp_port" min="1" max="65535">
+                </div>
+
+                <div class="config-group">
+                    <label for="mqtt_broker_ip">IP del Broker MQTT:</label>
+                    <input type="text" id="mqtt_broker_ip" placeholder="10.0.0.250">
+                </div>
+
+                <div class="config-group">
+                    <label for="mqtt_broker_port">Puerto MQTT:</label>
+                    <input type="number" id="mqtt_broker_port" min="1" max="65535">
+                </div>
+
+                <div class="config-group">
+                    <label for="mqtt_broker_ws_port">Puerto WebSocket MQTT:</label>
+                    <input type="number" id="mqtt_broker_ws_port" min="1" max="65535">
+                </div>
+
+                <div class="config-group">
+                    <label for="mqtt_user">Usuario MQTT:</label>
+                    <input type="text" id="mqtt_user">
+                </div>
+
+                <div class="config-group">
+                    <label for="mqtt_password">Contraseña MQTT:</label>
+                    <input type="password" id="mqtt_password">
+                </div>
+
+                <div class="button-group">
+                    <button id="loadConfigBtn">Cargar</button>
+                    <button id="saveConfigBtn">Salvar</button>
+                </div>
+
+                <div id="configStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
