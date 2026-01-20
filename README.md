@@ -174,7 +174,7 @@ http://[IP_DEL_SERVIDOR]:61616
 
 ## 📝 Notas Adicionales
 
-- **Requisitos del LV-Hub**: Debe estar configurado para aceptar conexiones TCP en el puerto 10034
+- **Requisitos de la conexion con las baterias o el LV-Hub**: Debe de utilizarse un interface Serial/TCP y configurarse de acuerdo a los parametros de la aplicación
 - **Broker MQTT**: Debe tener WebSocket habilitado en el puerto 9001 para la interfaz web
 - **Home Assistant**: Los datos se integran perfectamente con sensores MQTT de Home Assistant
 - **Actualizaciones**: La configuración se puede modificar en tiempo real desde la interfaz web
